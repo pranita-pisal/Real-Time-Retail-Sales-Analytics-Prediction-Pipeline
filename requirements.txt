@@ -1,0 +1,11 @@
+kafka-python
+pyspark
+pymongo
+psycopg2-binary
+streamlit
+scikit-learn
+pandas
+numpy
+joblib
+apache-airflow
+matplotlib

@@ -1,0 +1,40 @@
+# Virtual Environment
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Airflow
+airflow/logs/
+airflow/*.pid
+airflow/airflow.db
+
+# Spark
+spark-warehouse/
+
+# Kafka logs
+kafka/logs/
+
+# Build folders
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Secrets
+.env
+*.pem
+*.key
