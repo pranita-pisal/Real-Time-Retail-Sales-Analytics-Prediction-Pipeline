@@ -8,17 +8,28 @@ print("Launching Walmart Real-Time Pipeline")
 print("========================================")
 print("Pure Python mode - No Java/Spark required!")
 
-# Define the Python executable to use (from the virtual environment)
-if os.name == 'nt':
-    python_exe = os.path.join("venv", "Scripts", "python.exe")
-    streamlit_exe = os.path.join("venv", "Scripts", "streamlit.exe")
-else:
-    python_exe = os.path.join("venv", "bin", "python")
-    streamlit_exe = os.path.join("venv", "bin", "streamlit")
+# Define the Python and Streamlit executables using the currently active environment
+python_exe = sys.executable
+python_dir = os.path.dirname(python_exe)
 
-if not os.path.exists(python_exe):
-    print(f"Error: Virtual environment not found at {python_exe}. Make sure you are in the project root.")
+if os.name == 'nt':
+    streamlit_exe = os.path.join(python_dir, "streamlit.exe")
+else:
+    streamlit_exe = os.path.join(python_dir, "streamlit")
+
+# Verify that we are running inside a virtual environment (i.e. not the system python)
+if not os.path.exists(streamlit_exe):
+    print("Error: Streamlit executable not found. Make sure your virtual environment is activated.")
     sys.exit(1)
+
+# Automatically start Docker databases
+print("Starting database containers...")
+if os.name != 'nt':
+    subprocess.run("PYTHONNOUSERSITE=1 docker-compose up -d", shell=True)
+else:
+    subprocess.run("docker-compose up -d", shell=True)
+print("Waiting 5 seconds for databases to initialize...")
+time.sleep(5)
 
 # List of commands to run
 processes = [
@@ -45,7 +56,7 @@ try:
         p.wait()
 
 except KeyboardInterrupt:
-    print("\nStopping all services...")
+    print("\nStopping all Python services...")
     for p in running_procs:
         p.terminate()
     # On Windows, also kill child processes
@@ -56,4 +67,11 @@ except KeyboardInterrupt:
                              capture_output=True, timeout=5)
             except:
                 pass
+    
+    # Automatically stop Docker databases
+    print("Stopping database containers...")
+    if os.name != 'nt':
+        subprocess.run("PYTHONNOUSERSITE=1 docker-compose down", shell=True)
+    else:
+        subprocess.run("docker-compose down", shell=True)
     print("All services stopped.")

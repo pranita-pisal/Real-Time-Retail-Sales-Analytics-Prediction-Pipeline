@@ -64,7 +64,7 @@ Download the Walmart dataset and place the `Walmart.csv` file directly inside th
 ### 3. Spin Up Infrastructure
 Start the entire backend infrastructure (Kafka, Zookeeper, Spark, MongoDB, Postgres, Airflow) using Docker Compose:
 ```bash
-docker-compose up -d
+PYTHONNOUSERSITE=1 docker-compose up -d
 ```
 *(Wait a few minutes for all services, especially Airflow, to become healthy).*
 

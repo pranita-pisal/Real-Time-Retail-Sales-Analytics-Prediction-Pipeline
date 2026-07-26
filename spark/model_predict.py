@@ -17,7 +17,7 @@ from datetime import datetime
 KAFKA_BROKER = "localhost:9092"
 KAFKA_TOPIC = "walmart-sales"
 POSTGRES_HOST = "localhost"
-POSTGRES_PORT = "5433"
+POSTGRES_PORT = "5432"
 POSTGRES_DB = "airflow"
 POSTGRES_USER = "airflow"
 POSTGRES_PASSWORD = "airflow"

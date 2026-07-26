@@ -1,0 +1,54 @@
+2. Step-by-Step Guide: Setting Up the Project on Another Laptop
+Assuming the new laptop already has VS Code, Git, and Python 3.9+ installed, here is the exact guide to get this project running from scratch.
+
+Step 1: Install Docker Desktop
+Before doing anything with the code, the new laptop needs Docker to run the databases.
+
+Download and install Docker Desktop for Windows from the official website.
+Start Docker Desktop and ensure the Docker engine is running (you should see a green icon in the system tray).
+Step 2: Copy the Codebase
+Copy the entire walmart_realtime_pipeline folder to the new laptop (via a USB drive, Google Drive, or cloning from GitHub).
+Open VS Code.
+Go to File > Open Folder and select the walmart_realtime_pipeline folder.
+Step 3: Start the Docker Infrastructure
+Open a terminal in VS Code (Ctrl + `).
+Run the following command to download the images and start the databases in the background:
+```bash
+PYTHONNOUSERSITE=1 docker-compose up -d
+```
+(Optional) You can open the Docker Desktop app to verify that the walmart_realtime_pipeline container group is running and shows Kafka, Zookeeper, Postgres, and Mongo as active.
+Step 4: Set Up the Python Virtual Environment
+You need to install the required Python libraries. In the VS Code terminal, run these commands one by one:
+
+Create a virtual environment named venv:
+bash
+python -m venv venv
+Activate the virtual environment:
+Windows Command Prompt: venv\Scripts\activate
+Windows PowerShell: .\venv\Scripts\activate (You should see (venv) appear at the start of your terminal prompt).
+Install all the project dependencies:
+bash
+pip install -r requirements.txt
+Step 5: Train the Machine Learning Model (First Time Only)
+Before running the real-time pipeline, the ML model needs to be generated and saved.
+
+In the terminal (with venv activated), run:
+bash
+python train_model.py
+Wait a few moments. It will train the Random Forest model and save it as walmart_rf_model.pkl in the folder.
+Step 6: Start the Real-Time Pipeline
+Now you are ready to launch the entire system!
+
+In the terminal, run the orchestrator script:
+bash
+python start_pipeline.py
+This script will automatically launch:
+The Kafka Producer (sending data)
+The Stream Processor (saving aggregations to MongoDB)
+The ML Predictor (making predictions and saving to PostgreSQL)
+The Streamlit Dashboard
+Step 7: View the Dashboard
+Open a web browser on the laptop.
+Navigate to: http://localhost:8501
+You will see the live dashboard populating with data.
+To Stop the Project: Go back to the VS Code terminal running start_pipeline.py and press Ctrl + C. This will gracefully shut down the Python scripts. To stop the databases, run docker-compose down.

@@ -6,14 +6,14 @@ import psycopg2
 import time
 
 # --- Configuration ---
-st.set_page_config(page_title="Walmart Real-Time Dashboard", layout="wide", page_icon="🛒")
+st.set_page_config(page_title="Real-Time Retail Sales Analytics & Prediction Pipeline", layout="wide", page_icon="🛒")
 
 # Database Credentials
 MONGO_URI = "mongodb://admin:admin@localhost:27017/"
 MONGO_DB = "walmart"
 
 POSTGRES_HOST = "localhost"
-POSTGRES_PORT = "5433"
+POSTGRES_PORT = "5432"
 POSTGRES_DB = "airflow"
 POSTGRES_USER = "airflow"
 POSTGRES_PASSWORD = "airflow"
@@ -100,7 +100,7 @@ def get_holiday_name(row):
         return "Other Holiday"
 
 # --- Main App ---
-st.title("🛒 Walmart Real-Time Sales & ML Predictions")
+st.title("🛒 Real-Time Retail Sales Analytics & Prediction Pipeline")
 
 with st.spinner("Fetching live data from streaming databases..."):
     store_agg = fetch_mongo_store_agg()
